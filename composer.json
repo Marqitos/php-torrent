@@ -14,6 +14,9 @@
     "require": {
         "php": ">=8.4"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^12.4"
+    },
     "autoload": {
         "psr-4": {
             "Rodas\\Torrent\\": "src/"
@@ -26,5 +29,19 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "dev:build:clean": "git clean -fX build/",
+        "dev:test": [
+            "@dev:test:unit"
+        ],
+        "dev:test:unit": "phpunit --colors=always",
+        "test": "@dev:test"
+    },
+    "scripts-descriptions": {
+        "dev:build:clean": "Cleans the build/ directory.",
+        "dev:test": "Runs linting and static analysis.",
+        "dev:test:unit": "Runs unit tests.",
+        "test": "Runs linting and static analysis."
     }
 }
