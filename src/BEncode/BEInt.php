@@ -96,7 +96,7 @@ class BEInt implements BEncodeDataInterface {
      * @return array
      */
     public function __serialize(): array {
-        return ['i' => $this->value];
+        return [$this->value];
     }
     /**
      * Set value from array
@@ -105,7 +105,7 @@ class BEInt implements BEncodeDataInterface {
      * @return void
      */
     public function __unserialize(array $data): void {
-        $this->value = $data['i'];
+        $this->value = $data[0];
     }
 # -- Members of Serializable
 
