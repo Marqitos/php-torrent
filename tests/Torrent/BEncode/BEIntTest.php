@@ -14,7 +14,7 @@
 
 declare(strict_types=1);
 
-namespace Rodas\Test\Dotenvx;
+namespace Rodas\Test\Torrent;
 
 use PHPUnit\Framework\TestCase;
 use Rodas\Torrent\BEncode\BEInt;
@@ -22,6 +22,7 @@ use Rodas\Torrent\BEncode\BEncodeType;
 
 use function is_int;
 use function is_string;
+use function random_int;
 
 use const PHP_EOL;
 use const PHP_INT_MAX;

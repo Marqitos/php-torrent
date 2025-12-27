@@ -14,7 +14,7 @@
 
 declare(strict_types=1);
 
-namespace Rodas\Test\Dotenvx;
+namespace Rodas\Test\Torrent;
 
 use PHPUnit\Framework\TestCase;
 use Rodas\Torrent\BEncode\BEString;
