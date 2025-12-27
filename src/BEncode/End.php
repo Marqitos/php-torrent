@@ -17,8 +17,11 @@ namespace Rodas\Torrent\BEncode;
 
 class End implements BEncodeTypeInterface {
 # Members of BEncodeTypeInterface
+    /**
+     * @inheritDoc
+     */
     public BEncodeType $type {
         get => BEncodeType::End;
-    };
+    }
 ## -- Members of BEncodeTypeInterface
 }

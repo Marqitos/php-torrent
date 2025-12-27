@@ -15,13 +15,23 @@ declare(strict_types=1);
 
 namespace Rodas\Torrent;
 
+use Rodas\Torrent\BEncode\BEncodeDataInterface;
 use Rodas\Torrent\BEncode\BEncodeTypeInterface;
+use Rodas\Torrent\BEncode\End;
 use Rodas\Torrent\BEncode\Error;
 use Rodas\Torrent\BEncode\BEInt;
 use Rodas\Torrent\BEncode\BEList;
 use Rodas\Torrent\BEncode\BEString;
 
 class BEncode {
+
+    /**
+     * Returns an BEncode object from a BEncode string
+     *
+     * @param  string               $raw
+     * @param  integer              $offset
+     * @return BEncodeTypeInterface
+     */
     public static function decode(string &$raw, int &$offset = 0): BEncodeTypeInterface {
         if (strlen($raw) <= $offset) {
             return new Error("Decoder exceeded max length.");
@@ -46,7 +56,8 @@ class BEncode {
     }
 
     /**
-     * @param int|string|array $value
+     * Returns a BEncode string from a PHP value
+     * @param int|string|array|bool $value
      * @throws Exception
      * @return string
      */
@@ -84,26 +95,34 @@ class BEncode {
         throw new Exception("Bencode supports only integers, strings and arrays. $type given.");
     }
 
-    public static function asBEncodeObject($value) {
-        if ($value instanceof BEncodeTypeInterface) {
+    /**
+     * Returns a BEncode object from a PHP value
+     * @param int|string|array|bool $value
+     * @return BEncodeDataInterface|Error
+     */
+    public static function asBEncodeObject($value): BEncodeDataInterface|Error {
+        if ($value instanceof BEncodeDataInterface) {
             return $value;
         }
-        if (is_bool($value)) {
+        if (is_bool($value)) { // bool to int
             $value = $value ? 1 : 0;
+        } elseif ($value instanceof Stringable) { // Stringable to string
+            $value = (string) $value;
         }
         if (is_int($value)) {
-            $value = new BEInteger($value);
+            $value = new BEInt($value);
+        } elseif (is_string($value)) {
+            $value = new BEString($value);
         } elseif (is_array($value)) {
             if (array_is_list($value)) {
                 $value = BEList::fromArray($value);
             } else {
-                $value = BEDictionary::fromArray($value);}
+                $value = BEDictionary::fromArray($value);
             }
         }
         if (!($value instanceof BEncodeDataInterface)) {
-            return Error("Cannot convert value to BEncode object.");
+            return new Error("Cannot convert value to BEncode object.");
         }
         return $value;
     }
-
 }

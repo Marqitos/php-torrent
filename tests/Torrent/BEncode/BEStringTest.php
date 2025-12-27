@@ -25,8 +25,6 @@ use function is_string;
 use function random_int;
 
 use const PHP_EOL;
-use const PHP_INT_MAX;
-use const PHP_INT_MIN;
 
 /**
  * Test class for BEString
@@ -35,6 +33,12 @@ use const PHP_INT_MIN;
  */
 class BEStringTest extends TestCase {
 
+    /**
+     * Return a random string
+     *
+     * @param  integer $maxLength Maximum length of the string
+     * @return string
+     */
     protected static function randomString(int $maxLength = 16): string {
         $length = random_int(1, $maxLength);
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -124,7 +128,7 @@ class BEStringTest extends TestCase {
 
         $methodSerialized = $beString->serialize();
         $this->assertTrue(is_string($methodSerialized));
-        fwrite(STDERR, "BEInt: $initialValue, serialize() as '$methodSerialized'." . PHP_EOL);
+        fwrite(STDERR, "BEString: $initialValue, serialize() as '$methodSerialized'." . PHP_EOL);
         $randomValue = static::randomString();
         $beCopy = new BEString($randomValue);
         $beCopy->unserialize($methodSerialized);

@@ -15,21 +15,26 @@ declare(strict_types=1);
 
 namespace Rodas\Torrent\BEncode;
 
-class Error implements BEncodeTypeInterface {
+use Exception;
+
+class Error extends Exception implements BEncodeTypeInterface {
 # Constructor
-    public function __construct(string $error) {
-        $this->value = $error;
+    /**
+     * Creates a new instance or Error
+     *
+     * @param  string $message
+     */
+    public function __construct(string $message) {
+        parent::__construct($message);
     }
 # -- Constructor
 
 # Members of BEncodeTypeInterface
+    /**
+     * @inheritDoc
+     */
     public BEncodeType $type {
         get => BEncodeType::Error;
-    };
-## -- Members of BEncodeTypeInterface
-
-    public string $value {
-        get => $this->value;
-        protected set => $this->value = $value;
     }
+## -- Members of BEncodeTypeInterface
 }
