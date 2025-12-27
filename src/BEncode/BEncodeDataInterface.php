@@ -19,7 +19,24 @@ use Serializable;
 use Stringable;
 
 interface BEncodeDataInterface extends BEncodeTypeInterface, Serializable, Stringable {
-    public $value { get; };
+    /**
+     * Gets de BEncoded value
+     *
+     * @var mixed
+     */
+    public mixed $value { get; }
+    /**
+     * Create a instance from a BEncoded string
+     *
+     * @param  string               $raw    BEncoded string, by ref
+     * @param  integer              $offset Initial offset, by ref
+     * @return BEncodeTypeInterface New object
+     */
     public static function decode(string &$raw, int &$offset = 0): BEncodeTypeInterface;
+    /**
+     * Returns de BEncoded string that represent the data
+     *
+     * @return string BEncoded string
+     */
     public function encode(): string;
 }

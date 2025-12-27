@@ -21,25 +21,41 @@ use function substr;
 
 use const FILTER_VALIDATE_INT;
 
+/**
+ * Represents a BEncoded integer
+ */
 class BEInt implements BEncodeDataInterface {
 
+    /**
+     * Create a new instance of BEInt
+     *
+     * @param  integer $value Integer data
+     */
     public function __construct(int $value) {
         $this->value = $value;
     }
 
 # Members of BEncodeTypeInterface
+    /**
+     * @inheritDoc
+     */
     public BEncodeType $type {
         get => BEncodeType::Int;
-    };
+    }
 ## -- Members of BEncodeTypeInterface
 
 # Members of BEncodeDataInterface
+    /**
+     * @inheritDoc
+     */
     public int $value {
         get => $this->value;
         set => $this->value = $value;
     }
-
-    public static function decode(&$raw, &$offset): BEncodeTypeInterface {
+    /**
+     * @inheritDoc
+     */
+    public static function decode(string &$raw, int &$offset = 0): BEncodeTypeInterface {
         $end = strpos($raw, "e", $offset);
         $value = filter_var(substr($raw, ++$offset, $end - $offset), FILTER_VALIDATE_INT);
         if ($value === false) {
@@ -48,28 +64,57 @@ class BEInt implements BEncodeDataInterface {
         $offset += $end - $offset;
         return new static($value);
     }
-
+    /**
+     * @inheritDoc
+     */
     public function encode(): string {
         return "i" . $this->value . "e";
     }
 # -- Members of BEncodeDataInterface
 
 # Members of Serializable
-    public function serialize(): ?string {
+    /**
+     * Return data as string
+     *
+     * @return string
+     */
+    public function serialize(): string {
         return (string) $this->value;
     }
+    /**
+     * Set value from string
+     *
+     * @param  string $data Serialized data
+     * @return void
+     */
     public function unserialize(string $data): void {
         $this->value = (int) $data;
     }
+    /**
+     * Return data as array
+     *
+     * @return array
+     */
     public function __serialize(): array {
-        return ['value' => $this->value];
+        return ['i' => $this->value];
     }
+    /**
+     * Set value from array
+     *
+     * @param  array $data Unserialized data
+     * @return void
+     */
     public function __unserialize(array $data): void {
-        $this->value = $data['value'];
+        $this->value = $data['i'];
     }
 # -- Members of Serializable
 
 # Members of Stringable
+    /**
+     * Return data as bencoded string
+     *
+     * @return string
+     */
     public function __toString(): string {
         return $this->encode();
     }

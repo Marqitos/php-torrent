@@ -16,5 +16,10 @@ declare(strict_types=1);
 namespace Rodas\Torrent\BEncode;
 
 interface BEncodeTypeInterface {
-    public BEncodeType $type { get; };
+    /**
+     * Get the token type
+     *
+     * @var BEncodeType BEncode token type
+     */
+    public BEncodeType $type { get; }
 }
