@@ -1,0 +1,30 @@
+{
+    "name": "rodas/torrent",
+    "description": "BitTorrent and BEncode format library",
+    "type": "library",
+    "keywords": ["torrent", "bencode"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcos Porto Mariño",
+            "email": "php@marcospor.to"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rodas\\Torrent\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rodas\\Test\\Torrent\\": "tests/Torrent/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
