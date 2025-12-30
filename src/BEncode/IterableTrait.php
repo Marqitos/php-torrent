@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Rodas\Torrent\BEncode;
 
-use Generator;
+use Iterator;
 
 use function count;
 
@@ -28,15 +28,15 @@ trait IterableTrait {
     /**
      * Iterable item
      *
-     * @var Generator
+     * @var Iterator
      */
-    protected Generator $generator;
+    protected Iterator $iterator;
     /**
-     * Gets the generator of the value
+     * Gets the iterator of the value
      *
-     * @return Generator
+     * @return Iterator
      */
-    abstract protected function getGenerator(): Generator;
+    abstract protected function getIterator(): Iterator;
     /**
      * Returns de BEncoded string that represent the data
      *
@@ -51,7 +51,7 @@ trait IterableTrait {
      * @return mixed
      */
     public function current(): mixed {
-        return $this->generator->current();
+        return $this->iterator->current();
     }
     /**
      * Return the current iterator key
@@ -59,7 +59,7 @@ trait IterableTrait {
      * @return mixed
      */
     public function key(): mixed {
-        return $this->generator->key();
+        return $this->iterator->key();
     }
     /**
      * Move the iterator to the next value
@@ -67,7 +67,7 @@ trait IterableTrait {
      * @return void
      */
     public function next(): void {
-        $this->generator->next();
+        $this->iterator->next();
     }
     /**
      * Rewind the iterator to the first value
@@ -75,7 +75,7 @@ trait IterableTrait {
      * @return void
      */
     public function rewind(): void {
-        $this->generator = $this->getGenerator();
+        $this->iterator = $this->getIterator();
     }
     /**
      * Check if the current iterator position is valid
@@ -83,7 +83,7 @@ trait IterableTrait {
      * @return bool
      */
     public function valid(): bool {
-        return $this->generator->valid();
+        return $this->iterator->valid();
     }
 # -- Members of Iterator
 
@@ -136,7 +136,7 @@ trait IterableTrait {
      * @return void
      */
     public function __wakeup(): void {
-        $this->generator = $this->getGenerator();
+        $this->iterator = $this->getIterator();
     }
 # -- Members of Serializable
 

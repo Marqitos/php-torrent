@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Rodas\Torrent\BEncode;
 
 use Countable;
-use Generator;
 use Iterator;
 use Rodas\Torrent\BEncode;
 use ValueError;
@@ -40,7 +39,7 @@ class BEList implements BEncodeDataInterface, Iterator, Countable {
                 throw new ValueError();
             }
         }
-        $this->generator = $this->getGenerator();
+        $this->iterator = $this->getIterator();
     }
 # -- Constructor
 
@@ -122,7 +121,7 @@ class BEList implements BEncodeDataInterface, Iterator, Countable {
 # -- Members of Serializable
 
 # Members of IterableTrait
-    protected function getGenerator(): Generator {
+    protected function getIterator(): Iterator {
         foreach ($this->value as $value) {
             yield $value;
         }
