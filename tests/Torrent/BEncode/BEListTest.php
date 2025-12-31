@@ -182,11 +182,10 @@ class BEListTest extends TestCase {
      * @covers Rodas\Torrent\BEncode\BEList::value
      */
     public function testEmpty() {
-        $initialValue = [];
-        $beList = new BEList($initialValue);
-        $this->assertTrue(empty($beList));
+        $beList = new BEList;
+        $this->assertTrue(empty($beList->value));
         $beList->add("foo");
-        $this->assertFalse(empty($beList));
+        $this->assertFalse(empty($beList->value));
         $this->assertEquals("foo", $beList->value[0]->value);
     }
 }
