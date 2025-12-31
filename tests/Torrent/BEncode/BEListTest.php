@@ -38,6 +38,8 @@ class BEListTest extends TestCase {
      *
      * @covers Rodas\Torrent\BEncode\BEList::__construct
      * @covers Rodas\Torrent\BEncode\BEList::value
+     * @covers Rodas\Torrent\BEncode\BEList::current()
+     * @covers Rodas\Torrent\BEncode\BEList::next()
      */
     public function testValue() {
         $initialValue = ["foo", "bar", 5];

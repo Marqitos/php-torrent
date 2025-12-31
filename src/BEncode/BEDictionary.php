@@ -15,29 +15,51 @@ declare(strict_types=1);
 
 namespace Rodas\Torrent\BEncode;
 
+use Countable;
+use Iterator;
 use Rodas\Torrent\BEncode;
+use ValueError;
 
 class BEDictionary implements BEncodeDataInterface, Iterator, Countable {
     use IterableTrait;
 
-    protected function __construct(array $dictionary) {
-        $this->value = $dictionary;
+# Constructor
+    /**
+     * Create a new instance of BEList
+     *
+     * @param  array $value list data
+     */
+    public function __construct(array $dictionary = []) {
+        $this->value = [];
+        foreach ($dictionary as $key => $item) {
+            if (! is_string($key)) {
+                return new ValueError("Key is not a string.");
+            }
+            if (! $this->set($key, $item)) {
+                throw new ValueError();
+            }
+        }
         $this->iterator = $this->getIterator();
     }
 
 # Members of BEncodeTypeInterface
+    /**
+     * @inheritDoc
+     */
     public BEncodeType $type {
         get => BEncodeType::Dictionary;
-    };
+    }
 ## -- Members of BEncodeTypeInterface
 
 # Members of BEncodeDataInterface
-    public array $value {
-        get => $this->value;
-        protected set => $this->value = $value;
-    }
+    /**
+     * Gets de BEncoded value
+     *
+     * @var array
+     */
+    public array $value;
 
-    public static function decode(&$raw, &$offset): BEncodeTypeInterface {
+    public static function decode(string &$raw, int &$offset = 0): BEncodeTypeInterface {
         $dictionary = [];
         $error = null;
         while (true) {
@@ -77,11 +99,10 @@ class BEDictionary implements BEncodeDataInterface, Iterator, Countable {
     }
 
     public function encode(): string {
-        ksort($this->value, SORT_STRING);
         $encoded = "d";
         foreach ($this->value as $key => $value) {
-            $bstr = new BEString($key);
-            $encoded .= $bstr->encode();
+            $beKey = new BEString($key);
+            $encoded .= $beKey->encode();
             $encoded .= $value->encode();
         }
         $encoded .= "e";
@@ -90,40 +111,62 @@ class BEDictionary implements BEncodeDataInterface, Iterator, Countable {
 # -- Members of BEncodeDataInterface
 
 # Members of Serializable
+    /**
+     * Return data as string
+     *
+     * @return string
+     */
     public function __unserialize(array $data): void {
         $this->value = [];
         foreach ($data as $key => $value) {
             $this->set($key, $value);
         }
     }
+    /**
+     * Set value from string
+     *
+     * @param  string $data Serialized data
+     * @return void
+     */
+    public function unserialize(string $data): void {
+        $values = unserialize($data);
+        $this->value = [];
+        foreach ($values as $key => $item) {
+            $this->set($key, $item);
+        }
+    }
 # -- Members of Serializable
 
+# Members of IterableTrait
     protected function getIterator(): Iterator {
         foreach ($this->value as $key => $value) {
             yield $key => $value;
         }
     }
+# -- Members of IterableTrait
 
-    public static function fromArray(array $dictionary): BEncodeTypeInterface {
-        foreach ($dictionary as $key => &$value) {
-            if (is_string($key)) {
-                return new Error("Key is not a string.");
-            }
-            if (!($value instanceof BEncodeDataInterface)) {
-                $value = BEncode::asBEncodeObject($value);
-            }
-        }
-        return new static($dictionary);
-    }
-
+    /**
+     * Remove an item from the dictionary
+     *
+     * @param  string $key
+     * @return void
+     */
     public function remove(string $key) {
         unset($this->value[$key]);
     }
 
+    /**
+     * Add an item to the dictionary
+     *
+     * @param  string                                     $key  Key to add
+     * @param  BEncodeDataInterface|int|string|array|bool $item Item to add
+     * @return bool                                             true on success, false otherwise
+     */
     public function set(string $key, BEncodeDataInterface|int|string|array|bool $item): bool {
         $item = BEncode::asBEncodeObject($item);
         if ($item instanceof BEncodeDataInterface) {
             $this->value[$key] = $item;
+            ksort($this->value, SORT_STRING);
             return true;
         }
         return false;
