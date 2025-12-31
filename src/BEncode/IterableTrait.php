@@ -130,14 +130,6 @@ trait IterableTrait {
      * @return void
      */
     abstract public function __unserialize(array $data): void;
-    /**
-     * Wakeup method
-     *
-     * @return void
-     */
-    public function __wakeup(): void {
-        $this->iterator = $this->getIterator();
-    }
 # -- Members of Serializable
 
 # Members of Stringable

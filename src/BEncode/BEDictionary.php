@@ -121,6 +121,7 @@ class BEDictionary implements BEncodeDataInterface, Iterator, Countable {
         foreach ($data as $key => $value) {
             $this->set($key, $value);
         }
+        $this->iterator = $this->getIterator();
     }
     /**
      * Set value from string
@@ -134,6 +135,7 @@ class BEDictionary implements BEncodeDataInterface, Iterator, Countable {
         foreach ($values as $key => $item) {
             $this->set($key, $item);
         }
+        $this->iterator = $this->getIterator();
     }
 # -- Members of Serializable
 

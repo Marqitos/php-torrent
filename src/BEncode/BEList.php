@@ -103,6 +103,7 @@ class BEList implements BEncodeDataInterface, Iterator, Countable {
         foreach ($data as $item) {
             $this->add($item);
         }
+        $this->iterator = $this->getIterator();
     }
     /**
      * Set value from string
@@ -116,6 +117,7 @@ class BEList implements BEncodeDataInterface, Iterator, Countable {
         foreach ($values as $item) {
             $this->add($item);
         }
+        $this->iterator = $this->getIterator();
     }
 
 # -- Members of Serializable
