@@ -22,7 +22,7 @@ class BEDictionary implements BEncodeDataInterface, Iterator, Countable {
 
     protected function __construct(array $dictionary) {
         $this->value = $dictionary;
-        $this->generator = $this->getGenerator();
+        $this->iterator = $this->getIterator();
     }
 
 # Members of BEncodeTypeInterface
@@ -98,7 +98,7 @@ class BEDictionary implements BEncodeDataInterface, Iterator, Countable {
     }
 # -- Members of Serializable
 
-    protected function getGenerator(): Generator {
+    protected function getIterator(): Iterator {
         foreach ($this->value as $key => $value) {
             yield $key => $value;
         }

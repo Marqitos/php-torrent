@@ -21,14 +21,15 @@ use Rodas\Torrent\BEncode\BEList;
 use Rodas\Torrent\BEncode\BEncodeType;
 
 use function array_is_list;
+use function count;
 use function is_string;
 
 use const PHP_EOL;
 
 /**
- * Test class for BEString
+ * Test class for BEList
  *
- * @covers Rodas\Torrent\BEncode\BEString
+ * @covers Rodas\Torrent\BEncode\BEList
  */
 class BEListTest extends TestCase {
 
@@ -41,7 +42,7 @@ class BEListTest extends TestCase {
     public function testValue() {
         $initialValue = ["foo", "bar", 5];
         $beList = new BEList($initialValue);
-        $this->assertEquals(count($initialValue), count($beList->value));
+        $this->assertEquals(count($initialValue), count($beList));
         foreach ($initialValue as $item) {
             $this->assertEquals($item, $beList->current()->value);
             $beList->next();
@@ -90,16 +91,16 @@ class BEListTest extends TestCase {
             $this->assertEquals($initialValue[$count], $item->value);
             $count++;
         }
-        $this->assertEquals(count($initialValue), count($beCopy->value));
+        $this->assertEquals(count($initialValue), count($beCopy));
         $this->assertTrue(array_is_list($beCopy->value));
     }
 
     /**
-     * Test (string) BEString
+     * Test (string) BEList
      *
-     * @covers Rodas\Torrent\BEncode\BEString::__construct
-     * @covers Rodas\Torrent\BEncode\BEString::encode
-     * @covers Rodas\Torrent\BEncode\BEString::__toString
+     * @covers Rodas\Torrent\BEncode\BEList::__construct
+     * @covers Rodas\Torrent\BEncode\BEList::encode
+     * @covers Rodas\Torrent\BEncode\BEList::__toString
      */
     public function testStringable() {
         $initialValue = ["foo", "bar", 5];
@@ -110,13 +111,13 @@ class BEListTest extends TestCase {
     }
 
     /**
-     * Test BEString::serialize
+     * Test BEList::serialize
      *
-     * @covers Rodas\Torrent\BEncode\BEString::__construct
-     * @covers Rodas\Torrent\BEncode\BEString::serialize
-     * @covers Rodas\Torrent\BEncode\BEString::unserialize
-     * @covers Rodas\Torrent\BEncode\BEString::__serialize
-     * @covers Rodas\Torrent\BEncode\BEString::__unserialize
+     * @covers Rodas\Torrent\BEncode\BEList::__construct
+     * @covers Rodas\Torrent\BEncode\BEList::serialize
+     * @covers Rodas\Torrent\BEncode\BEList::unserialize
+     * @covers Rodas\Torrent\BEncode\BEList::__serialize
+     * @covers Rodas\Torrent\BEncode\BEList::__unserialize
      */
     public function testSerializable() {
         $initialValue = ["foo", "bar", 5];
@@ -134,7 +135,7 @@ class BEListTest extends TestCase {
             $this->assertEquals($initialValue[$count], $item->value);
             $count++;
         }
-        $this->assertEquals(count($initialValue), count($beUnserialized->value));
+        $this->assertEquals(count($initialValue), count($beUnserialized));
         $this->assertTrue(array_is_list($beUnserialized->value));
 
         $methodSerialized = $beList->serialize();
@@ -151,7 +152,40 @@ class BEListTest extends TestCase {
             $this->assertEquals($initialValue[$count], $item->value);
             $count++;
         }
-        $this->assertEquals(count($initialValue), count($beCopy->value));
+        $this->assertEquals(count($initialValue), count($beCopy));
         $this->assertTrue(array_is_list($beCopy->value));
+    }
+
+    /**
+     * Test BEList::add
+     *
+     * @covers Rodas\Torrent\BEncode\BEList::__construct
+     * @covers Rodas\Torrent\BEncode\BEList::add
+     * @covers Rodas\Torrent\BEncode\BEList::value
+     */
+    public function testAdd() {
+        $initialValue = ["foo", "bar", 5];
+        $beList = new BEList($initialValue);
+        $count = count($initialValue);
+        $this->assertEquals($count, count($beList));
+        $beList->add("baz");
+        $count++;
+        $this->assertEquals($count, count($beList));
+        $this->assertEquals("baz", $beList->value[3]->value);
+    }
+
+    /**
+     * Test BEList implements Countable
+     *
+     * @covers Rodas\Torrent\BEncode\BEList::__construct
+     * @covers Rodas\Torrent\BEncode\BEList::add
+     * @covers Rodas\Torrent\BEncode\BEList::value
+     */
+    public function testEmpty() {
+        $beList = new BEList;
+        $this->assertTrue(empty($beList->value));
+        $beList->add("foo");
+        $this->assertFalse(empty($beList->value));
+        $this->assertEquals("foo", $beList->value[0]->value);
     }
 }
