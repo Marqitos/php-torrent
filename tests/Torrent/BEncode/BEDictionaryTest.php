@@ -7,7 +7,7 @@
  *
  * @package Rodas\Torrent
  * @subpackage Test
- * @copyright 2025 Marcos Porto <php@marcospor.to>
+ * @copyright 2026 Marcos Porto <php@marcospor.to>
  * @license https://opensource.org/license/mit The MIT License
  * @link https://marcospor.to/repositories/torrent
  */
@@ -188,6 +188,7 @@ class BEDictionaryTest extends TestCase {
         $count = count($initialValue);
         $this->assertEquals($count, count($beDictionary));
         $beDictionary->set('baz', 10);
+        $this->assertEquals($count, count($beDictionary));
         $this->assertEquals(10, $beDictionary->value['baz']->value);
         $beDictionary->set('min', 0);
         $count++;

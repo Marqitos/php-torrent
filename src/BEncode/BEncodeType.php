@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  *
  * @package Rodas\Torrent
- * @copyright 2025 Marcos Porto <php@marcospor.to>
+ * @copyright 2026 Marcos Porto <php@marcospor.to>
  * @license https://opensource.org/license/mit The MIT License
  * @link https://marcospor.to/repositories/torrent
  */

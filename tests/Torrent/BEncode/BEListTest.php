@@ -7,7 +7,7 @@
  *
  * @package Rodas\Torrent
  * @subpackage Test
- * @copyright 2025 Marcos Porto <php@marcospor.to>
+ * @copyright 2026 Marcos Porto <php@marcospor.to>
  * @license https://opensource.org/license/mit The MIT License
  * @link https://marcospor.to/repositories/torrent
  */
@@ -38,8 +38,8 @@ class BEListTest extends TestCase {
      *
      * @covers Rodas\Torrent\BEncode\BEList::__construct
      * @covers Rodas\Torrent\BEncode\BEList::value
-     * @covers Rodas\Torrent\BEncode\BEList::current()
-     * @covers Rodas\Torrent\BEncode\BEList::next()
+     * @covers Rodas\Torrent\BEncode\BEList::current
+     * @covers Rodas\Torrent\BEncode\BEList::next
      */
     public function testValue() {
         $initialValue = ["foo", "bar", 5];
@@ -66,8 +66,8 @@ class BEListTest extends TestCase {
     public function testType() {
         $initialValue = ["foo", "bar", 5];
         $beList = new BEList($initialValue);
-        $this->assertEquals(BEncodeType::List, $beList->type);
         $this->assertTrue($beList->type instanceof BEncodeType);
+        $this->assertEquals(BEncodeType::List, $beList->type);
     }
 
     /**
@@ -116,6 +116,7 @@ class BEListTest extends TestCase {
      * Test BEList::serialize
      *
      * @covers Rodas\Torrent\BEncode\BEList::__construct
+     * @covers Rodas\Torrent\BEncode\BEList::count
      * @covers Rodas\Torrent\BEncode\BEList::serialize
      * @covers Rodas\Torrent\BEncode\BEList::unserialize
      * @covers Rodas\Torrent\BEncode\BEList::__serialize
@@ -181,6 +182,7 @@ class BEListTest extends TestCase {
      *
      * @covers Rodas\Torrent\BEncode\BEList::__construct
      * @covers Rodas\Torrent\BEncode\BEList::add
+     * @covers Rodas\Torrent\BEncode\BEList::count
      * @covers Rodas\Torrent\BEncode\BEList::value
      */
     public function testEmpty() {
